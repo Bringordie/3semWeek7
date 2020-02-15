@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <h1>Fetch users</h1>
+
+        <form>
+            <input type="text" name="user" value="" id="userid"/>
+            <br>
+            <button type="submit" id="getuser">Get user</button>
+            <button type="submit" id="getallusers">Get All Users</button>
+        </form>
+        
+        <div id = "userinfo"> </div>
+        
+
+        <script>
+            let userId = document.querySelector("#userid");
+            let getUser = document.querySelector("#getuser");
+            let userTableInfo = document.querySelector("#userinfo");
+            let getAllUsers = document.querySelector("#getallusers");
+            //let userInfo;
+
+            getUser.onclick = function (e) {
+                e.preventDefault();
+                let url = "https://jsonplaceholder.typicode.com/users/" + userId.value;
+                //clearing data so that all users data isn't there.
+                userTableInfo.innerHTML = "";
+                fetch(url)
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log("data", data);
+                    //userTableInfo.innerHTML = "id: " + data.id + "<br>" + "name: " + data.name + "<br>" + "username: " + data.username + "<br";
+                    userTableInfo.innerHTML = JSON.stringify(data);
+                        });
+
+            };
+            
+            getAllUsers.onclick = function (e) {
+                e.preventDefault();
+                let url = "https://jsonplaceholder.typicode.com/users";
+                fetch(url)
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log("data", data);
+                            userTableInfo.innerHTML = allUsers(data);
+                        });
+            };
+            
+            function allUsers(users){
+                let tableInfo = users.map(user => "<tr><td>" + user.name + "</td><td>" + user.phone + "</td></tr>");
+                tableInfo.unshift("<table class=\"table\"><tr><th>Name</th><th>Phone</th></tr>");
+                tableInfo.push("</table>");
+                return tableInfo.join('');
+            }
+            
+            function userInfo(user){
+                let info = user;
+                return tableInfo.join('');
+            }
+        </script>
+
+    </body>
+</html>
